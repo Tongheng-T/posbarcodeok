@@ -1,0 +1,28 @@
+RewriteEngine On
+
+RewriteRule ^imguser/?$ index.html
+
+RewriteRule ^resources/?$ index.html
+RewriteRule ^resources/images/?$ index.php
+RewriteRule ^resources/userpic/?$ index.php
+RewriteRule ^resources/templates/?$ index.html
+RewriteRule ^resources/templates/back/?$ index.html
+RewriteRule ^resources/uploads/?$ index.html
+# RewriteRule ^studentlist/?$ index.html
+# RewriteRule ^index/?$ index.html
+# RewriteRule ^index.php/?$ index.html
+
+#RewriteRule ^print/?$ print.php [NC,L]
+
+# RewriteCond %{HTTPS} !=On
+# RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+errorDocument 404 /ui/indexx.php
+
+
+# RewriteRule ^editscore/(.*)$ /date.php?tt=$1 [NC,L]
+
+# RewriteRule ^(.*)$ /dmizone_bkp/index.php?/$1 [L]

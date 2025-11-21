@@ -1,0 +1,38 @@
+/* img4x6 */
+
+#profiledisplay,
+#profiledisplay_edit {
+    display: block;
+    justify-content: center;
+    border-radius: 5px;
+    max-width: 100px;
+    height: 86px;
+    margin: 10px;
+    border: 1px solid rgb(158, 151, 151);
+}
+#profiledisplay_pay{
+    display: block;
+    justify-content: center;
+    border-radius: 5px;
+    height: 232px;
+    border: 1px solid rgb(158, 151, 151);
+}
+
+#profilImg,
+#profilImg_edit,#profilImge_pay {
+    display: none;
+}
+
+#profiledisplay:hover,
+#profiledisplay_edit:hover,#profiledisplay_pay:hover {
+    cursor: pointer;
+}
+.card {
+    background-clip: padding-box;
+    box-shadow: 0 1px 4px rgb(35 116 217 / 1%);
+}
+
+
+.badgeth {
+    font-size: 97%;
+}

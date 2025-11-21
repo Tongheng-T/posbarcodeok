@@ -1,0 +1,12 @@
+#buttons {
+    display: none;
+}
+
+/* @media print {
+    @page {
+        size: 58mm 200mm;
+        margin: -30px;
+        auto is the initial value
+    }
+} */
+

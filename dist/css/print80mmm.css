@@ -1,0 +1,103 @@
+:root {
+    --body-bg: rgb(204, 204, 204);
+    --white: #ffffff;
+    --darkWhite: #ccc;
+    --black: #000000;
+    --dark: #615c60;
+    --themeColor: #22b8d1;
+    --pageShadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+}
+
+
+/* Font Include */
+
+@font-face {
+    font-family: "tong";
+    src: url(../../fone/KhmerOSbattambang.ttf)format("truetype");
+}
+
+@font-face {
+    font-family: "KhmerOSMoulLight";
+    src: url(../../fone/KhmerOSMoulLight.ttf)format("truetype");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-family: 'tong';
+}
+
+td,
+th,
+tr,
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+.table {
+    width: 98%;
+    margin: 2px;
+    text-align: center;
+    align-content: center;
+}
+
+.centered {
+    text-align: center;
+    margin-top: -35px;
+}
+
+.RECEIPT {
+    margin-top: 3px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.ticket {
+    width: 85mm;
+    max-width: 85mm;
+    display: block;
+    background: var(--white);
+    margin: 0 auto;
+    position: relative;
+    padding-top: 11px;
+}
+
+.logo img {
+    height: 76px;
+}
+
+.h5 {
+    float: right;
+    font-family: 'KhmerOSMoulLight';
+    padding-top: 26px;
+    margin-right: 13px;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.h_p {
+    float: left;
+    margin-left: 6px;
+    margin-right: 8px;
+}
+
+
+/* .logo {
+    text-align: center;
+} */
+
+@media print {
+    @page {
+        size: 90mm 200mm;
+        margin: 0;
+        /* auto is the initial value */
+    }
+}
