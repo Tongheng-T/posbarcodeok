@@ -97,14 +97,14 @@ unset($_SESSION['messagee']) ?>
                     <div class="row">
                         <div class="col-8">
                             <div class="icheck-primary">
-                                <!-- <a href="#" class="toastrDefaultInfo">I forgot my password</a> -->
-                                <p class="mb-1">
+                                <a href="#" class="toastrDefaultInfo">I forgot my password</a>
+                                <!-- <p class="mb-1">
                                     <a href="-/forgot_password">I forgot my password</a>
                                 </p>
 
                                 <p class="mb-0">
                                     <a href="-/register" class="text-center">Register a new membership</a>
-                                </p>
+                                </p> -->
                             </div>
                         </div>
                         <!-- /.col -->
