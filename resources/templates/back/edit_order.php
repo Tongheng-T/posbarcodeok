@@ -1,237 +1,184 @@
 <script>
-  //Initialize Select2 Elements
-  $('.select2').select2()
+  // Initialize Select2 Elements
+$('.select2').select2();
+$('.select2bs4').select2({ theme: 'bootstrap4' });
 
-  //Initialize Select2 Elements
-  $('.select2bs4').select2({
-    theme: 'bootstrap4'
-  })
+var productarr = [];
 
-
-  var productarr = [];
-
-  $.ajax({
+// ========= LOAD ORDER ITEMS ===========
+$.ajax({
     url: "../resources/templates/back/getorderproduct.php",
-    method: "get",
+    method: "GET",
     dataType: "json",
-    data: {
-      id: <?php echo $_GET['id'] ?>
-    },
-    success: function(data) {
-      //alert("pid");n
+    data: { id: <?php echo $_GET['id'] ?> },
+    success: function (data) {
 
-      //console.log(data);
+        $.each(data, function (key, item) {
 
-      $.each(data, function(key, data) {
-        if (jQuery.inArray(data["product_id"], productarr) !== -1) {
+            // If product already exists in the table → increase qty only
+            if (productarr.includes(item.product_id)) {
 
-          var actualqty = parseInt($('#qty_id' + data["product_id"]).val()) + 1;
-          $('#qty_id' + data["product_id"]).val(actualqty);
+                let qty = parseInt($('#qty_id' + item.product_id).val()) + 1;
+                $('#qty_id' + item.product_id).val(qty);
 
-          var saleprice = parseInt(actualqty) * data["saleprice"];
+                let saleprice = qty * item.saleprice;
 
-          <?php
-          $change = query("SELECT * from tbl_change where aus = '$aus'");
-          confirm($change);
-          $row_exchange = fetch_object($change);
-          $exchange = $row_exchange->exchange;
-          $usd_or_real = $row_exchange->usd_or_real;
-          ?>
+                let final_price = ('<?php echo $usd_or_real ?>' === 'usd')
+                    ? saleprice
+                    : saleprice * <?php echo $exchange ?>;
 
-          if ('<?php echo $usd_or_real ?>' == 'usd') {
-            salepricee = saleprice;
-          } else {
-            salepricee = saleprice * <?php echo $exchange ?>;
+                $('#saleprice_id' + item.product_id).html(final_price);
+                $('#saleprice_idd' + item.product_id).val(final_price);
 
-          }
-
-
-          $('#saleprice_id' + data["product_id"]).html(salepricee);
-          $('#saleprice_idd' + data["product_id"]).val(salepricee);
-
-          // $("#txtbarcode_id").val("");
-          calculate(0, 0);
-
-        } else {
-
-          addrow(data["product_id"], data["product_name"], data["qty"], data["rate"], data["saleprice"], data["stock"], data["barcode"], data["image"]);
-
-          productarr.push(data["product_id"]);
-
-          //$("#txtbarcode_id").val("");
-
-          function addrow(product_id, product_name, qty, rate, saleprice, stock, barcode, image) {
-
-            if ('<?php echo $usd_or_real ?>' == 'usd') {
-              salepricee = saleprice;
-              ratee = rate;
-
-            } else {
-              salepricee = rate * <?php echo $exchange ?>;
-              ratee = rate * <?php echo $exchange ?>;
-
+                calculate(0, 0);
             }
 
-            var tr = '<tr>' +
+            // Otherwise → add new row
+            else {
 
-              '<input type="hidden" class="form-control barcode" name="barcode_arr[]" id="barcode_id' + barcode + '" value="' + barcode + '" >' +
+                addTableRow(
+                    item.product_id,
+                    item.product_name,
+                    item.qty,
+                    item.rate,
+                    item.saleprice,
+                    item.stock,
+                    item.barcode,
+                    item.image,
+                    item.units
+                );
 
-              '<td style="text-align:left; vertical-align:middle; font-size:17px;"><img src="../productimages/' + image + ' " alt="" height=50 >  &nbsp; <class="form-control product_c" name="product_arr[]" <span class="badge badge-dark"> ' + product_name + '</span><input type="hidden" class="form-control pid" name="pid_arr[]" value="' + product_id + '" ><input type="hidden" class="form-control product" name="product_arr[]" value="' + product_name + '" >  </td>' +
+                productarr.push(item.product_id);
+            }
+        });
 
-              '<td style="text-align:left; vertical-align:middle; font-size:17px;"><span class="badge badge-primary stocklbl" name="stock_arr[]" id="stock_id' + product_id + '">' + stock + '</span><input type="hidden" class="form-control stock_c" name="stock_c_arr[]" id="stock_idd' + product_id + '" value="' + stock + '"></td>' +
-
-              '<td style="text-align:left; vertical-align:middle; font-size:17px;"><span class="badge badge-warning price" name="price_arr[]" id="price_id' + product_id + '">' + salepricee + '</span><input type="hidden" class="form-control price_c" name="price_c_arr[]" id="price_idd' + product_id + '" value="' + salepricee + '"></td>' +
-
-              '<td><input type="text" class="form-control qty" name="quantity_arr[]" id="qty_id' + product_id + '" value="' + qty + '" size="1"></td>' +
-
-              '<td style="text-align:left; vertical-align:middle; font-size:17px;"><span class="badge badge-success totalamt" name="netamt_arr[]" id="saleprice_id' + product_id + '">' + ratee * qty + '</span><input type="hidden" class="form-control saleprice" name="saleprice_arr[]" id="saleprice_idd' + product_id + '" value="' + ratee * qty + '"></td>' +
-
-              //remove button code start here
-
-              // '<td style="text-align:left; vertical-align:middle;"><center><name="remove" class"btnremove" data-id="'+pid+'"><span class="fas fa-trash" style="color:red"></span></center></td>'+
-              // '</tr>';
-
-              '<td><center><button type="button" name="remove" class="btn btn-danger btn-sm btnremove" data-id="' + product_id + '"><span class="fas fa-trash"></span></center></td>' +
-
-
-              '</tr>';
-
-            $('.details').append(tr);
-            calculate(0, 0);
-          } //end function addrow
-
-        }
-      }); //end function each
-      $("#txtbarcode_id").val("");
-    } // end of success function
-  }) // end of ajax request
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  $("#itemtable").delegate(".qty", "keyup change", function() {
-
-    var quantity = $(this);
-    var tr = $(this).parent().parent();
-
-    if ((quantity.val() - 0) > (tr.find(".stock_c").val() - 0)) {
-
-      Swal.fire("WARNING!", "SORRY! This Much Of Quantity Is Not Available", "warning");
-      quantity.val(1);
-
-      tr.find(".totalamt").text(quantity.val() * tr.find(".price").text());
-
-      tr.find(".saleprice").val(quantity.val() * tr.find(".price").text());
-      calculate(0, 0);
-      $("#txtpaid").val("");
-      $("#txtdue").val("");
-    } else {
-      tr.find(".totalamt").text(quantity.val() * tr.find(".price").text());
-
-      tr.find(".saleprice").val(quantity.val() * tr.find(".price").text());
-      calculate(0, 0);
-      $("#txtpaid").val("");
-      $("#txtdue").val("");
+        $("#txtbarcode_id").val("");
     }
-  });
+});
 
 
+// ========= ADD ROW FUNCTION ===========
+function addTableRow(product_id, product_name, qty, rate, saleprice, stock, barcode, image, units) {
 
-  // function calculate(dis, paid) {
+    let unitOptions = "";
 
-  //   var subtotal = 0;
-  //   var discount = dis;
-  //   var sgst = 0;
-  //   var cgst = 0;
-  //   var total = 0;
-  //   var paid_amt = paid;
-  //   var due = 0;
+    // currency conversion
+    let salepricee, ratee;
 
-  //   $(".saleprice").each(function() {
+    if ('<?php echo $usd_or_real ?>' === 'usd') {
+        salepricee = saleprice;
+        ratee = rate;
+    } else {
+        salepricee = saleprice * <?php echo $exchange ?>;
+        ratee = rate * <?php echo $exchange ?>;
+    }
 
-  //     subtotal = subtotal + ($(this).val() * 1);
-  //   });
+    // units dropdown
+    if (units && units.length > 0) {
+        units.forEach(u => {
+            let unit_price = ('<?php echo $usd_or_real ?>' === 'usd')
+                ? u.unit_price
+                : u.unit_price * <?php echo $exchange ?>;
 
-  //   $("#txtsubtotal_id").val(subtotal.toFixed(2));
+            unitOptions += `<option value="${unit_price}" data-usd="${u.unit_price}">${u.unit_name}</option>`;
+        });
+    }
 
-  //   sgst = parseFloat($("#txtsgst_id_p").val());
+    let row = `
+        <tr>
 
-  //   cgst = parseFloat($("#txtcgst_id_p").val());
+            <input type="hidden" name="barcode_arr[]" value="${barcode}">
 
-  //   discount = parseFloat($("#txtdiscount_p").val());
+            <td style="font-size:17px;">
+                <img src="../productimages/${image}" height="50">
+                &nbsp;
+                <span class="badge badge-dark">${product_name}</span>
+                <input type="hidden" name="pid_arr[]" value="${product_id}">
+                <input type="hidden" name="product_arr[]" value="${product_name}">
+            </td>
 
-  //   sgst = sgst / 100;
-  //   sgst = sgst * subtotal;
+            <td style="font-size:17px;">
+                <span class="badge badge-primary stocklbl" id="stock_id${product_id}">${stock}</span>
+                <input type="hidden" class="stock_c" id="stock_idd${product_id}" value="${stock}">
+            </td>
 
-  //   cgst = cgst / 100;
-  //   cgst = cgst * subtotal;
+            <td>
+                <select class="form-control item_size" name="size_arr[]" data-pid="${product_id}">
+                    ${unitOptions}
+                </select>
+            </td>
 
-  //   discount = discount / 100;
-  //   discount = discount * subtotal;
+            <td style="font-size:17px;">
+                <span class="badge badge-warning price" id="price_id${product_id}">${salepricee}</span>
+                <input type="hidden" class="price_c" id="price_idd${product_id}" value="${salepricee}">
+            </td>
 
-  //   $("#txtsgst_id_n").val(sgst.toFixed(2));
+            <td>
+                <input type="text" class="form-control qty" name="quantity_arr[]" 
+                       id="qty_id${product_id}" value="${qty}">
+            </td>
 
-  //   $("#txtcgst_id_n").val(cgst.toFixed(2));
+            <td style="font-size:17px;">
+                <span class="badge badge-success totalamt" id="saleprice_id${product_id}">
+                    ${ratee * qty}
+                </span>
+                <input type="hidden" class="saleprice" id="saleprice_idd${product_id}" 
+                       value="${ratee * qty}">
+            </td>
 
-  //   $("#txtdiscount_n").val(discount.toFixed(2));
+            <td>
+                <center>
+                    <button type="button" class="btn btn-danger btn-sm btnremove" data-id="${product_id}">
+                        <span class="fas fa-trash"></span>
+                    </button>
+                </center>
+            </td>
 
+        </tr>
+    `;
 
-  //   total = sgst + cgst + subtotal - discount;
-  //   due = total - paid_amt;
-
-
-  //   $("#txttotal").val(total.toFixed(2));
-
-  //   paid_db = parseFloat($("#txtpaid").val());
-  //   due_db = paid_db - total;
-
-  //   $("#txtdue").val(due_db.toFixed(2));
-
-  // } //end calculate function
-
-
-  // $("#txtdiscount_p").keyup(function() {
-
-  //   var discount = $(this).val();
-
-  //   calculate(discount, 0);
-
-  // });
-
-  // $("#txtpaid").keyup(function() {
-
-  //   var paid = $(this).val();
-  //   var discount = $("#txtdiscount_p").val();
-  //   calculate(discount, paid);
-
-  // });
+    $('.details').append(row);
+    calculate(0, 0);
+}
 
 
-  // $(document).on('click', '.btnremove', function() {
+// ========= QTY CHANGE EVENT ===========
 
-  //   var removed = $(this).attr("data-id");
-  //   productarr = jQuery.grep(productarr, function(value) {
+$("#itemtable").delegate(".qty", "keyup change", function () {
 
-  //     return value != removed;
-  //     calculate(0, 0);
-  //     $("#txtpaid").val("");
-  //     $("#txtdue").val("");
-  //   })
+    let tr = $(this).closest('tr');
+    let qty = parseFloat($(this).val()) || 1;
+    let stock = parseFloat(tr.find(".stock_c").val());
+    let price = parseFloat(tr.find(".price").text());
 
-  //   $(this).closest('tr').remove();
-  //   calculate(0, 0);
-  //   $("#txtpaid").val("");
-  //   $("#txtdue").val("");
-  // });
+    if (qty > stock) {
+        Swal.fire("WARNING!", "SORRY! This Much Of Quantity Is Not Available", "warning");
+        qty = 1;
+        $(this).val(1);
+    }
+
+    let total = qty * price;
+
+    tr.find(".totalamt").text(total);
+    tr.find(".saleprice").val(total);
+
+    calculate(0, 0);
+    $("#txtpaid").val("");
+    $("#txtdue").val("");
+});
+
+
+// ========= REMOVE ROW ===========
+$(document).on('click', '.btnremove', function () {
+    let id = $(this).attr("data-id");
+
+    productarr = productarr.filter(p => p != id);
+
+    $(this).closest('tr').remove();
+
+    calculate(0, 0);
+    $("#txtpaid").val("");
+    $("#txtdue").val("");
+});
+
 </script>

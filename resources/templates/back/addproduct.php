@@ -2,7 +2,7 @@
 
 
 
-if ($_SESSION['useremail'] == ""  or $_SESSION['role'] == "User") {
+if ($_SESSION['useremail'] == "" or $_SESSION['role'] == "User") {
 
   header('location:../');
 }
@@ -52,12 +52,14 @@ addproduct();
 
                   <div class="form-group">
                     <label>Barcode</label>
-                    <input type="text" class="form-control" placeholder="Enter Barcode" name="txtbarcode" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="Enter Barcode" name="txtbarcode"
+                      autocomplete="off">
                   </div>
 
                   <div class="form-group">
                     <label>Product Name</label>
-                    <input type="text" class="form-control" placeholder="Enter Name" name="txtproductname" autocomplete="off" required>
+                    <input type="text" class="form-control" placeholder="Enter Name" name="txtproductname"
+                      autocomplete="off" required>
                   </div>
 
                   <div class="form-group">
@@ -72,10 +74,10 @@ addproduct();
                       while ($row = fetch_assoc($select)) {
                         extract($row);
 
-                      ?>
-                         <option><?php echo htmlspecialchars($row['category']); ?></option>
+                        ?>
+                        <option><?php echo htmlspecialchars($row['category']); ?></option>
 
-                      <?php 
+                      <?php
 
                       }
 
@@ -88,7 +90,8 @@ addproduct();
 
                   <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-control" placeholder="Enter Description" name="txtdescription" rows="4" ></textarea>
+                    <textarea class="form-control" placeholder="Enter Description" name="txtdescription"
+                      rows="4"></textarea>
                   </div>
 
 
@@ -104,47 +107,51 @@ addproduct();
 
                   <div class="form-group">
                     <label>Stock Quantity</label>
-                    <input type="number" min="1" step="any" class="form-control" placeholder="Enter Stock" name="txtstock" autocomplete="off" required>
+                    <input type="number" min="1" step="any" class="form-control" placeholder="Enter Stock"
+                      name="txtstock" autocomplete="off" required>
                   </div>
 
-
-                  <div class="form-group">
-                    <label>Purchase Price</label>
-                    <input type="number" min="0" step="any" class="form-control" placeholder="Enter Purchase Price" name="txtpurchaseprice" autocomplete="off" required>
-                  </div>
 
                   <div class="form-group">
                     <label>Sale Price</label>
-                    <input type="number" min="0.1" step="any" class="form-control" placeholder="Enter Sale Price" name="txtsaleprice" autocomplete="off" required>
+                    <input type="number" min="0.1" step="any" class="form-control" placeholder="Enter Sale Price"
+                      name="txtsaleprice" autocomplete="off" required>
                   </div>
 
-<table class="table table-bordered" id="unit_table">
-    <thead>
-        <tr>
-            <th>Unit / Size</th>
-            <th>Sale Price</th>
-            <th><button type="button" class="btn btn-success btn-sm" id="add_unit">+</button></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <select class="form-control unit_select" name="unit_name[]" required>
-                    <?= fill_unit(); ?>
-                </select>
-            </td>
-            <td><input type="number" class="form-control" name="unit_price[]" min="0.1" step="any" required></td>
-            <td><button type="button" class="btn btn-danger btn-sm remove_unit">x</button></td>
-        </tr>
-    </tbody>
-</table>
+                  <table class="table table-bordered" id="unit_table">
+                    <thead>
+                      <tr>
+                        <th>Unit / Size</th>
+                        <th>តម្លៃនាំចូល</th>
+                        <th>Sale Price</th>
+                        <th><button type="button" class="btn btn-success btn-sm" id="add_unit">+</button></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select class="form-control unit_select" name="unit_name[]" required>
+                            <?= fill_unit(); ?>
+                          </select>
+                        </td>
+                        <td>
+                    
+                            <input type="number" min="0" step="any" class="form-control"placeholder="Enter Purchase Price" name="txtpurchaseprice" autocomplete="off" required>
+                   
+                        </td>
+                        <td><input type="number" class="form-control" name="unit_price[]" min="0.1" step="any" required>
+                        </td>
+                        <td><button type="button" class="btn btn-danger btn-sm remove_unit">x</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
 
 
 
                   <div class="form-group">
                     <label>Product image</label>
-                    <input type="file" class="input-group" name="myfile" >
+                    <input type="file" class="input-group" name="myfile">
                     <p>Upload image</p>
                   </div>
 
@@ -170,6 +177,3 @@ addproduct();
   </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
-
-
-

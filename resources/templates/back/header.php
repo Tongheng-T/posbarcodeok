@@ -234,6 +234,13 @@
                                         <p>Orderlist_user</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="itemt?report_sales_summary"
+                                        class="nav-link <?php actr("report_sales_summary"); ?>">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>របាយការណ៍ចំណូល/ចំណាយ</p>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

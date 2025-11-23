@@ -102,7 +102,9 @@ if (!empty($_SESSION['message'])) {
 
         include(TEMPLATE_BACK . "/orderlist copy.php");
     }
-
+ if (isset($_GET['productst_report'])) {
+        include(TEMPLATE_BACK . "/productst_report.php");
+    }
 
 
     if (isset($_GET['registration'])) {

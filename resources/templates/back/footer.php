@@ -67,6 +67,7 @@ $(document).ready(function () {
                     <?= fill_unit(); ?>
                 </select>
             </td>
+               <td><input type="number" min="0" step="any" class="form-control"placeholder="Enter Purchase Price" name="txtpurchaseprice" autocomplete="off" required></td>
             <td><input type="number" class="form-control" name="unit_price[]" min="0.1" step="any" required></td>
             <td><button type="button" class="btn btn-danger btn-sm remove_unit">x</button></td>
         </tr>`;

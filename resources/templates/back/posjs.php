@@ -19,11 +19,9 @@
 
             $.ajax({
                 url: "../resources/templates/back/getproduct.php",
-                method: "get",
+                method: "GET",
+                data: { id: barcode },
                 dataType: "json",
-                data: {
-                    id: barcode
-                },
                 success: function (data) {
 
                     if (!data || !data.pid) {
@@ -47,13 +45,13 @@
 
                     } else {
 
-                        addrow(data["pid"], data["product"], data["saleprice"], data["stock"], data["barcode"], data["image"]);
+                        addrow(data["pid"], data["product"], data["saleprice"], data["stock"], data["barcode"], data["image"], data["units"]);
 
                         productarr.push(data["pid"]);
 
                         //$("#txtbarcode_id").val("");
 
-                        function addrow(pid, product, saleprice, stock, barcode, image) {
+                        function addrow(pid, product, saleprice, stock, barcode, image, units) {
 
                             <?php
                             $change = query("SELECT * from tbl_change where aus = '$aus'");
@@ -77,6 +75,11 @@
                                 '<td style="text-align:left; vertical-align:middle; font-size:17px;"><img src="../productimages/' + image + ' " alt="" height=50 >  &nbsp; <class="form-control product_c" name="product_arr[]" <span class="badge badge-dark">' + product + '</span><input type="hidden" class="form-control pid" name="pid_arr[]" value="' + pid + '" ><input type="hidden" class="form-control product" name="product_arr[]" value="' + product + '" >  </td>' +
 
                                 '<td style="text-align:left; vertical-align:middle; font-size:17px;"><span class="badge badge-primary stocklbl" name="stock_arr[]" id="stock_id' + pid + '">' + stock + '</span><input type="hidden" class="form-control stock_c" name="stock_c_arr[]" id="stock_idd' + pid + '" value="' + stock + '"></td>' +
+                                '<td>' +
+                                '<select class="form-control item_size" name="size_arr[]" data-pid="' + pid + '">' +
+                                unitOptions +
+                                '</select>' +
+                                '</td>' +
 
                                 '<td style="text-align:left; vertical-align:middle; font-size:17px;"><span class="badge badge-warning price" name="price_arr[]" id="price_id' + pid + '">' + salepricee + '</span><input type="hidden" class="form-control price_c" name="price_c_arr[]" id="price_idd' + pid + '" value="' + saleprice + '"></td>' +
 
@@ -200,6 +203,7 @@
 
                             var tr = '<tr>' +
                                 '<input type="hidden" class="form-control barcode" name="barcode_arr[]" id="barcode_id' + barcode + '" value="' + barcode + '" >' +
+                                '<input type="hidden" class="form-control purchasepriceo" name="purchaseprice_arr[]" id="purchasepriceo' + pid + '" value="' + purchaseprice + '">' +
 
                                 '<td style="text-align:left; vertical-align:middle; font-size:17px;"><img src="../productimages/' + image + ' " alt="" height=50 >  &nbsp; <class="form-control product_c" name="product_arr[]" <span class="badge badge-dark">' + product + '</span><input type="hidden" class="form-control pid" name="pid_arr[]" value="' + pid + '" ><input type="hidden" class="form-control product" name="product_arr[]" value="' + product + '" >  </td>' +
 
@@ -376,7 +380,7 @@
         tr.find('.price').text(price);
         tr.find('.price_c').val(price);
 
-        // Recalculate total for this row
+        // Recalculate total for this row2
         let qty = parseFloat(tr.find('.qty').val());
         let total = qty * price;
 

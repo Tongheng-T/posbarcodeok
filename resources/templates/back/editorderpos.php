@@ -40,7 +40,7 @@ if (isset($_POST['btnupdateorder'])) {
   $txt_discountp      = $_POST['txtdiscountp'];
   $txt_discount      = $_POST['txtdiscount'];
   $discount_h      = $_POST['discount_h'];
-  $free      = $_POST['free'];
+
 
   $txt_totall         = $_POST['txttotal'];
   $txt_payment_type  = $_POST['rb'];
@@ -98,7 +98,7 @@ if (isset($_POST['btnupdateorder'])) {
 
   // 4) Write update query for tbl_invoice table data.
 
-  $update_tbl_invoice = query("UPDATE tbl_invoice SET order_date='{$txt_orderdate}',subtotal='{$txt_subtotal}',discount='{$txt_discount}',discountp='{$txt_discountp}',free='{$free}',discount_h='{$discount_h}',total='{$txt_total}',payment_type='{$txt_payment_type}',due='{$txt_due}',paid='{$txt_paid}',edit='{$saler_name}' where invoice_id=$id");
+  $update_tbl_invoice = query("UPDATE tbl_invoice SET order_date='{$txt_orderdate}',subtotal='{$txt_subtotal}',discount='{$txt_discount}',discountp='{$txt_discountp}',discount_h='{$discount_h}',total='{$txt_total}',payment_type='{$txt_payment_type}',due='{$txt_due}',paid='{$txt_paid}',edit='{$saler_name}' where invoice_id=$id");
   confirm($update_tbl_invoice);
   $invoice_id = $id;
 
@@ -242,7 +242,7 @@ if ($usd_or_real == "usd") {
                 <form action="" method="post" name="">
 
 
-                  <select class="form-control select2" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                  <select id="product_id" class="form-control select2" data-dropdown-css-class="select2-purple" style="width: 100%;">
                     <option>Select OR Search</option><?php echo fill_product(); ?>
 
                   </select>
@@ -255,6 +255,7 @@ if ($usd_or_real == "usd") {
                         <tr>
                           <th>Product</th>
                           <th>Stock </th>
+                          <th>Unit / Size </th>
                           <th>price </th>
                           <th>QTY </th>
                           <th>Total </th>
